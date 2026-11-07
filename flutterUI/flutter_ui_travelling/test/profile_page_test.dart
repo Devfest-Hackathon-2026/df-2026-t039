@@ -20,9 +20,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Personal Information'), findsOneWidget);
     expect(find.text('Age: 30'), findsOneWidget);
-    expect(find.text('Hobby: Reading'), findsOneWidget);
-    expect(find.text('Hobby: Traveling'), findsOneWidget);
-    expect(find.text('Hobby: Coding'), findsOneWidget);
+    expect(find.text('Hobbies:'), findsOneWidget);
+    expect(find.text('Reading'), findsOneWidget);
+    expect(find.text('Traveling'), findsOneWidget);
+    expect(find.text('Coding'), findsOneWidget);
     expect(find.byType(AlertDialog), findsNothing);
     expect(find.text('Home'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
