@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_travelling/pages/home_page.dart';
+import 'package:flutter_ui_travelling/pages/chat_page.dart';
+import 'package:flutter_ui_travelling/pages/profile_page.dart';
+import 'package:flutter_ui_travelling/pages/settings_page.dart';
+import 'package:flutter_ui_travelling/pages/search_page.dart';
 
 import 'bottom_navigation.dart';
 
@@ -66,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _selectedIndex = 1;
+      _selectedIndex = 4;
     });
   }
 
@@ -82,11 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SafeArea(
         child: IndexedStack(
           index: _selectedIndex,
-          children: const [
-            HomePage(),
-            Center(child: Text('Search')),
-            Center(child: Text('Profile')),
-            Center(child: Text('Settings')),
+          children: [
+            const HomePage(),
+            const SearchPage(),
+            ProfilePage(isActive: _selectedIndex == 2),
+            const SettingsPage(),
+            const ChatPage(),
           ],
         ),
       ),
@@ -99,12 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: _selectedIndex == 4
+          ? null
+          : FloatingActionButton(
+              onPressed: _incrementCounter,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add),
+            ),
     );
   }
 }
