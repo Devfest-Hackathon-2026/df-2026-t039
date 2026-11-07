@@ -1,7 +1,5 @@
--- 001_create_tables.sqlの適用後に実行します。
--- 既に手動作成済みのDBには再実行しないでください。
-BEGIN;
-
+-- 共通ルール：更新日時、旅程の所有者整合、所有者変更の禁止。
+-- 旅行削除時の場所の自動削除は行わない（場所・保存関係は独立して保持）。
 -- 更新された行のupdated_atを自動更新します。
 CREATE FUNCTION set_updated_at()
 RETURNS trigger
@@ -81,39 +79,3 @@ FOR EACH ROW EXECUTE FUNCTION prevent_owner_change();
 CREATE TRIGGER places_owner_immutable
 BEFORE UPDATE OF user_id ON places
 FOR EACH ROW EXECUTE FUNCTION prevent_owner_change();
-
--- 旅行の予定を削除し、その旅行で使われていた未使用の場所を削除します。
--- ほかの予定で使われている場所は残します。
-CREATE FUNCTION cleanup_deleted_trip()
-RETURNS trigger
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    candidate_ids bigint[];
-BEGIN
-    SELECT array_agg(DISTINCT place_id)
-    INTO candidate_ids
-    FROM trip_items
-    WHERE trip_id = OLD.id
-      AND place_id IS NOT NULL;
-
-    DELETE FROM trip_items
-    WHERE trip_id = OLD.id;
-
-    DELETE FROM places AS p
-    WHERE p.id = ANY(candidate_ids)
-      AND NOT EXISTS (
-          SELECT 1
-          FROM trip_items AS i
-          WHERE i.place_id = p.id
-      );
-
-    RETURN OLD;
-END;
-$$;
-
-CREATE TRIGGER trips_cleanup
-BEFORE DELETE ON trips
-FOR EACH ROW EXECUTE FUNCTION cleanup_deleted_trip();
-
-COMMIT;
