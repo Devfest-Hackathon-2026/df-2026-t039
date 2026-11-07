@@ -2,6 +2,16 @@
 
 フロントエンドはこのファイルだけ見て実装できるようにしている。
 
+## サーバーを手元で動かす
+
+```bash
+cd hono-api
+docker compose up -d   # 先にDB
+npm run dev            # 次にAPI。curl localhost:8080/health/db が {"ok":true} ならOK
+```
+
+初めてのときは先に [README.md](../README.md) の「初回セットアップ」を行う（`npm install`、`.env` の作成、DBのテーブル作成、AIチャット用のDB作成、`gcloud auth application-default login`）。古いマイグレーションで作ったDBは形が違うので作り直す。
+
 ## 接続
 
 - **URL**：ローカルは `http://localhost:8080`。Androidエミュレーターからは `http://10.0.2.2:8080`。
