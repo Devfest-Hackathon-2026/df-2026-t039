@@ -38,8 +38,7 @@ export function createApp(verifyToken: VerifyToken) {
         ),
     }),
   )
-  // 認証なしモード（ハッカソン中の開発者向けデプロイ用）。設定すると全リクエストをこのユーザーとして扱う。
-  // URLを知っていれば誰でも操作できるため、本物のログインができたら必ず外す。
+  // 設定時は全リクエストをこのユーザーとして扱う。本物のログイン導入後は外す。
   const noAuthUserId = process.env.AUTH_DISABLED_USER_ID?.trim()
   if (noAuthUserId)
     console.warn(

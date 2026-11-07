@@ -43,11 +43,6 @@ curl http://localhost:8080/health/db   # {"ok":true} ならDBにもつながっ�
 ```
 
 フロントエンドからは、`Authorization: Bearer <.env の DEV_AUTH_TOKEN の値>` を付けて呼ぶとデモユーザーとして扱われる（ローカル専用）。Androidエミュレーターからは `http://10.0.2.2:8080`。
-
-## 認証なしモード
-
-`.env`（デプロイ時は環境変数）に `AUTH_DISABLED_USER_ID=hackathon-dev` を設定すると、トークンを見ずに全リクエストをそのユーザーとして扱う。ハッカソン中の開発者向けデプロイ用。URLを知っていれば誰でも操作できるので、URLは開発者にだけ共有し、本物のログインができたら必ず外す。デプロイ先では `DEV_AUTH_*` は設定しない（Cloud Run 上では起動を止める）。
-
 ## 止める
 
 `npm run dev` は Ctrl+C。DBは `docker compose stop`（データは残る）。
