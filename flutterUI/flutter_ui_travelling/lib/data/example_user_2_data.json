@@ -7,6 +7,11 @@
     "gender": "male",
     "occupation": "Student",
     "hobbies": ["Reading", "Traveling", "Coding"],
+    "saved_places": [
+        {"name": "Ohori Park", "location": "Fukuoka"},
+        {"name": "Dazaifu Tenmangu", "location": "Dazaifu"},
+        {"name": "Itsukushima Shrine", "location": "Hiroshima"}
+    ],
     "upcoming_trips": [
     ],
     "history": [

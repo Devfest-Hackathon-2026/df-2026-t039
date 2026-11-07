@@ -7,6 +7,11 @@
     "gender": "male",
     "occupation": "Software Engineer",
     "hobbies": ["Reading", "Traveling", "Coding"],
+    "saved_places": [
+        {"name": "Fushimi Inari Taisha", "location": "Kyoto"},
+        {"name": "Osaka Castle", "location": "Osaka"},
+        {"name": "Ueno Park", "location": "Tokyo"}
+    ],
     "upcoming_trips": [
         {
             "destination": "Osaka",
