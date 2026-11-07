@@ -1,7 +1,5 @@
 # hono-api API一覧（フロントエンド向け）
 
-フロントエンドはこのファイルだけ見て実装できるようにしている。
-
 ## サーバーを手元で動かす
 
 ```bash
@@ -14,9 +12,10 @@ npm run dev            # 次にAPI。curl localhost:8080/health/db が {"ok":tru
 
 ## 接続
 
-- **URL**：ローカルは `http://localhost:8080`。Androidエミュレーターからは `http://10.0.2.2:8080`。
-- **認証**：`/api/*` と `/me` には `Authorization: Bearer <Firebase IDトークン>` が必要。
-  - ログイン画面ができるまでは、サーバーの `.env` にある `DEV_AUTH_TOKEN` の値を送ればデモユーザーとして扱われる（ローカル専用。アプリに埋め込んで配布しない）。
+- **URL**：ふだんは開発者向けにデプロイしたサーバー（URLはDMで共有。外に出さない）を使う。手元で動かすときは `http://localhost:8080`、Androidエミュレーターからは `http://10.0.2.2:8080`。
+- **認証**：開発者向けのデプロイは**認証なし**。トークンは不要で、全員が同じユーザーとしてデータを共有する。
+  - 手元のサーバーでは `Authorization: Bearer <トークン>` が必要。サーバーの `.env` にある `DEV_AUTH_TOKEN` の値を送ればデモユーザーとして扱われる（`.env` に `AUTH_DISABLED_USER_ID` を設定すれば手元でも認証なし）。
+  - 本物のログインを入れたら、`Authorization: Bearer <Firebase IDトークン>` が必要になる。今のうちから送る処理を入れておいても問題ない（認証なしモードでは無視される）。
 - **Flutter Web**：サーバーの `CORS_ORIGINS` に実際のOrigin（例 `http://localhost:3000`）を入れてもらう。
 
 ## 共通ルール

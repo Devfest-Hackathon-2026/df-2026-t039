@@ -38,14 +38,25 @@ export function createApp(verifyToken: VerifyToken) {
         ),
     }),
   )
+  // 認証なしモード（ハッカソン中の開発者向けデプロイ用）。設定すると全リクエストをこのユーザーとして扱う。
+  // URLを知っていれば誰でも操作できるため、本物のログインができたら必ず外す。
+  const noAuthUserId = process.env.AUTH_DISABLED_USER_ID?.trim()
+  if (noAuthUserId)
+    console.warn(
+      `認証なしモードです。すべてのリクエストをユーザー ${noAuthUserId} として扱います`,
+    )
   const authenticate: MiddlewareHandler<ApiEnv> = async (c, next) => {
-    const match = c.req.header('Authorization')?.match(/^Bearer\s+(\S+)$/i)
-    if (!match) throw new ApiError(401, 'UNAUTHORIZED', '認証トークンが必要です')
     let userId: string
-    try {
-      userId = (await verifyToken(match[1])).uid
-    } catch {
-      throw new ApiError(401, 'UNAUTHORIZED', '認証トークンを検証できませんでした')
+    if (noAuthUserId) {
+      userId = noAuthUserId
+    } else {
+      const match = c.req.header('Authorization')?.match(/^Bearer\s+(\S+)$/i)
+      if (!match) throw new ApiError(401, 'UNAUTHORIZED', '認証トークンが必要です')
+      try {
+        userId = (await verifyToken(match[1])).uid
+      } catch {
+        throw new ApiError(401, 'UNAUTHORIZED', '認証トークンを検証できませんでした')
+      }
     }
     c.set('userId', userId)
     // Firebaseの初回利用者も、旅行・場所をそのまま作成できる。
