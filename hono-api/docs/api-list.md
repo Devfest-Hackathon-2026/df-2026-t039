@@ -35,6 +35,30 @@ npm run dev            # 次にAPI。curl localhost:8080/health/db が {"ok":tru
 | 413 / 500 | 送信データが1MiB超え / サーバーエラー |
 | 502 / 503 / 504 | Google検索の接続エラー / 未設定・利用制限 / タイムアウト |
 
+## すぐ試す
+
+`<デプロイURL>` を共有されたURL（末尾の `/` なし）に、`{id}` を返ってきた `id` に置き換える。
+
+```
+<デプロイURL>/health/db
+<デプロイURL>/api/trips/upcoming
+<デプロイURL>/api/trips?status=completed
+<デプロイURL>/api/trips/{id}
+<デプロイURL>/api/saved-places
+<デプロイURL>/api/places/search?q=京都
+<デプロイURL>/api/places/nearby?latitude=35.0&longitude=135.77
+<デプロイURL>/api/trips/{id}/messages
+```
+
+```bash
+curl -X POST <デプロイURL>/api/trips -H 'Content-Type: application/json' -d '{}'
+curl -X POST <デプロイURL>/api/trips/{id}/messages -H 'Content-Type: application/json' \
+  -d '{"client_message_id":"<UUID>","text":"京都に2人で行きたい"}'
+curl -X POST <デプロイURL>/api/saved-places -H 'Content-Type: application/json' -d '{"place_id":"{id}"}'
+```
+
+Flutter ではベースURLを1か所にまとめる：`const apiBaseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: '<デプロイURL>');`
+
 ## エンドポイント
 
 | メソッド | パス | 入力 | 出力 |
