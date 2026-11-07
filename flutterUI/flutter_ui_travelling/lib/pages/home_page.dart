@@ -3,6 +3,7 @@ import 'package:flutter_ui_travelling/customPaints/dash_border_painter.dart';
 
 import '../services/user_data_handler.dart';
 import '../widgets/destination_card.dart';
+import '../widgets/trip_details.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,93 +39,7 @@ class _HomePageState extends State<HomePage> {
               if (user['upcoming_trips'] != null &&
                   user['upcoming_trips'].isNotEmpty)
                 ...user['upcoming_trips'].map<Widget>(
-                  (trip) => Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.lightBlue, width: 2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              trip['destination'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.05,
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Start: ${trip['start_date']}'),
-                                    Text('End: ${trip['end_date']}'),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(''),
-                                    Text('Budget: ${trip['budget']}'),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        spacing: 12.0,
-                        children: [
-                          ...(trip['itinerary'] as List).asMap().entries.map<Widget>((entry) {
-                            final index = entry.key;
-                            final day = entry.value as List;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 8.0,
-                              children: [
-                                Text('${index + 1}日目', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                                ...day.map<Widget>(
-                                  (item) => Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.lightBlue),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${item['type']}', style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '${item['from']} - ${item['to']}:',
-                                            ),
-                                            Text('Budget: ${item['price']}'),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }),
-                        ],
-                      ),
-                    ],
-                  ),
+                  (trip) => TripDetails(trip: trip as Map<String, dynamic>),
                 )
               else ...[
                 SizedBox(
@@ -145,10 +60,10 @@ class _HomePageState extends State<HomePage> {
                         side: BorderSide.none,
                       ),
                       onPressed: () {
-                        print('Add a new trip');
+                        print('Add a new trip'); // FUnction to create new trip
                       },
                       child: const Text(
-                        'Add a new trip',
+                        'Add a new trip', 
                         textAlign: TextAlign.center,
                       ),
                     ),
