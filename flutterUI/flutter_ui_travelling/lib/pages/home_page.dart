@@ -38,43 +38,95 @@ class _HomePageState extends State<HomePage> {
               if (user['upcoming_trips'] != null &&
                   user['upcoming_trips'].isNotEmpty)
                 ...user['upcoming_trips'].map<Widget>(
-                  (trip) => Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.lightBlue, width: 2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(trip['destination'], style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.height * 0.05)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  (trip) => Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.lightBlue, width: 2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Text(
+                              trip['destination'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Start: ${trip['start_date']}'),
-                                Text('End: ${trip['end_date']}'),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Start: ${trip['start_date']}'),
+                                    Text('End: ${trip['end_date']}'),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(''),
+                                    Text('Budget: ${trip['budget']}'),
+                                  ],
+                                ),
                               ],
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(''),
-                                Text('Budget: ${trip['budget']}'),
-                              ],)
                           ],
-                        )
-                      ],
-                    ),
-                  )
-                        
+                        ),
+                      ),
+                      Column(
+                        spacing: 12.0,
+                        children: [
+                          ...(trip['itinerary'] as List).asMap().entries.map<Widget>((entry) {
+                            final index = entry.key;
+                            final day = entry.value as List;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8.0,
+                              children: [
+                                Text('${index + 1}日目', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                ...day.map<Widget>(
+                                  (item) => Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.lightBlue),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('${item['type']}', style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${item['from']} - ${item['to']}:',
+                                            ),
+                                            Text('Budget: ${item['price']}'),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        ],
+                      ),
+                    ],
+                  ),
                 )
-              else 
-              ...[
+              else ...[
                 SizedBox(
                   width: double.infinity,
                   child: CustomPaint(
@@ -102,12 +154,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const Text('人気の旅行先', 
+                const Text(
+                  '人気の旅行先',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(
                   height: 150,
@@ -120,12 +170,10 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                const Text('あなたにおすすめ！！', 
+                const Text(
+                  'あなたにおすすめ！！',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(
                   height: 150,
@@ -138,12 +186,10 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                const Text('近場なら…', 
+                const Text(
+                  '近場なら…',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(
                   height: 150,
