@@ -1,20 +1,9 @@
 # hono-api API一覧（フロントエンド向け）
 
-## サーバーを手元で動かす
-
-```bash
-cd hono-api
-docker compose up -d   # 先にDB
-npm run dev            # 次にAPI。curl localhost:8080/health/db が {"ok":true} ならOK
-```
-
-初めてのときは先に [README.md](../README.md) の「初回セットアップ」を行う（`npm install`、`.env` の作成、DBのテーブル作成、AIチャット用のDB作成、`gcloud auth application-default login`）。古いマイグレーションで作ったDBは形が違うので作り直す。
-
 ## 接続
 
-- **URL**：デプロイ先はDMで共有。手元で動かすときは `http://localhost:8080`、Androidエミュレーターからは `http://10.0.2.2:8080`。
+- **URL**：デプロイ先はDMで共有。
 - **認証**：`/api/*` と `/me` には `Authorization: Bearer <Firebase IDトークン>` が必要（デプロイ先での扱いはDMで共有）。
-  - 手元のサーバーでは、`.env` にある `DEV_AUTH_TOKEN` の値を送ればデモユーザーとして扱われる。
 - **Flutter Web**：サーバーの `CORS_ORIGINS` に実際のOrigin（例 `http://localhost:3000`）を入れてもらう。
 
 ## 共通ルール
