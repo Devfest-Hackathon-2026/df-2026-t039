@@ -1,0 +1,22 @@
+{trip: {id: 6, 
+title: 箱根 年末の温泉旅行, 
+destination: 箱根, 
+start_date: 2026-11-29, 
+end_date: 2026-11-30, 
+duration_days: 2, 
+participant_count: 2, 
+budget: 40000, 
+preferences: [温泉, 朝早めに動いて混雑を避けたい
+        ], 
+status: planned, 
+itinerary: [
+            [
+                {
+			id: 20, type: movement, title: ロマンスカーで箱根湯本へ, from: 08: 00, to: 09: 30, end_day_offset: 0, price: 2500, movement_type: train, estimated_travel_minutes: 90, notes: null, place: null
+                },
+                {id: 21, type: place_entertainment, title: 大涌谷, from: 10: 30, to: 12: 00, end_day_offset: 0, price: null, movement_type: null, estimated_travel_minutes: null, notes: null, place: {id: 18, name: 大涌谷, location: 神奈川県足柄下郡箱根町, category: , google_place_id: null, latitude: null, longitude: null, is_saved: false
+                    }
+                }
+            ],
+            [
+                {id: 22, type: place_entertainment, title: 芦ノ湖を朝の散歩, from: 07: 30, to: 09: 00, end_day_offset: 0, price: null, movement_type: null, estimated_travel_minutes: null, notes: null, place: {id: 1

@@ -1,40 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; 
 import 'package:flutter_ui_travelling/pages/home_page.dart';
 import 'package:flutter_ui_travelling/pages/chat_page.dart';
 import 'package:flutter_ui_travelling/pages/profile_page.dart';
 import 'package:flutter_ui_travelling/pages/settings_page.dart';
 import 'package:flutter_ui_travelling/pages/search_page.dart';
+import 'package:flutter_ui_travelling/services/service_locator.dart';
 
 import 'bottom_navigation.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
+  // Initialize caching system to reduce API costs
+  ServiceLocator.initialize(
+    baseUrl: dotenv.env['API_BASE_URL'] ?? 'http://localhost:3000',
+    enableCache: true,
+    defaultCacheTtl: 300, // 5 minutes default
+  );
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    // Clean up resources when app closes
+    ServiceLocator.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
