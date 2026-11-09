@@ -11,8 +11,21 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final _placesFuture = const NearbyPlacesHandler().loadNearbyPlaces();
+  final _searchController = TextEditingController();
   String _query = '';
   bool _showSaveMessage = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _searchPlaces() {
+    setState(() {
+      _query = _searchController.text.trim().toLowerCase();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +35,19 @@ class _SearchPageState extends State<SearchPage> {
         Padding(
           padding: const EdgeInsets.all(16),
           child: TextField(
-            onChanged: (value) =>
-                setState(() => _query = value.trim().toLowerCase()),
-            decoration: const InputDecoration(
+            controller: _searchController,
+            decoration: InputDecoration(
               labelText: 'Search places',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: IconButton(
+                tooltip: 'Clear search input',
+                onPressed: _searchController.clear,
+                icon: const Icon(Icons.clear),
+              ),
+              suffixIcon: IconButton(
+                tooltip: 'Search places',
+                onPressed: _searchPlaces,
+                icon: const Icon(Icons.arrow_forward),
+              ),
               border: OutlineInputBorder(),
             ),
           ),
@@ -91,7 +112,8 @@ class _SearchPageState extends State<SearchPage> {
                       trailing: IconButton(
                         tooltip: 'Save ${place.name}',
                         icon: const Icon(Icons.favorite_border),
-                        onPressed: () => setState(() => _showSaveMessage = true),
+                        onPressed: () =>
+                            setState(() => _showSaveMessage = true),
                       ),
                     ),
                   );
