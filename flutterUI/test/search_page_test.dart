@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ui_travelling/pages/search_page.dart';
+import 'package:flutter_ui_travelling/services/nearby_places_handler.dart';
 
 void main() {
   testWidgets('search filters sample places and save is a placeholder', (
     tester,
   ) async {
     await tester.pumpWidget(
-      const MaterialApp(home: Scaffold(body: SearchPage())),
+      MaterialApp(
+        home: Scaffold(
+          body: SearchPage(
+            nearbyPlacesLoader: () =>
+                const NearbyPlacesHandler().loadNearbyPlaces(),
+          ),
+        ),
+      ),
     );
     await tester.pumpAndSettle();
 
     expect(find.byType(SearchPage), findsOneWidget);
-    expect(find.text('Nearby places (sample data)'), findsOneWidget);
+    expect(find.text('Nearby places'), findsOneWidget);
     expect(find.text('Ohori Park'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), '  SHRINE  ');

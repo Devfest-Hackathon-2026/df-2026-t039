@@ -117,8 +117,8 @@ class PlacesRepository extends BaseRepository {
     return proxy.getWithCache(
       '/api/places/nearby',
       query: {
-        'lat': lat.toString(),
-        'lng': lng.toString(),
+        'latitude': lat.toString(),
+        'longitude': lng.toString(),
         'radius': radius.toString(),
       },
       forceRefresh: forceRefresh,
