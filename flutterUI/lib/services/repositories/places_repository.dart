@@ -1,4 +1,3 @@
-import '../cache/api_proxy.dart';
 import 'base_repository.dart';
 
 /// Places Repository with caching
@@ -14,7 +13,7 @@ class PlacesRepository extends BaseRepository {
     bool forceRefresh = false,
   }) async {
     return proxy.getWithCache(
-      '/places/nearby',
+      '/api/places/nearby',
       query: {
         'lat': lat.toString(),
         'lng': lng.toString(),

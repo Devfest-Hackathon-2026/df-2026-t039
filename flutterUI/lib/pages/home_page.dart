@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ui_travelling/customPaints/dash_border_painter.dart';
 
 import '../services/service_locator.dart';
-import '../services/user_data_handler.dart';
 import '../widgets/destination_card.dart';
 import '../widgets/trip_details.dart';
 

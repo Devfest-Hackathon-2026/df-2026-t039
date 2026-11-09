@@ -168,7 +168,7 @@ class TripDetails extends StatelessWidget {
                               formatTravelMinutes(item['estimated_travel_minutes']),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             ),
                             
@@ -177,7 +177,7 @@ class TripDetails extends StatelessWidget {
                             parseTypeToJapaneseName(item["type"], item["movement_type"]),
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 10,
+                              fontSize: 12,
                             ),
                           ),
                           Row(
@@ -189,6 +189,14 @@ class TripDetails extends StatelessWidget {
                               ],
                             ],
                           ),
+                          if(item['notes'] != null) ...[
+                            Text(
+                              item['notes'],
+                              style: const TextStyle(
+                                fontSize: 10,
+                              ),
+                            )
+                          ]
                         ],
                       ),
                     ),

@@ -1,4 +1,3 @@
-import '../cache/api_proxy.dart';
 import 'base_repository.dart';
 
 /// Saved Places Repository with caching
@@ -13,11 +12,8 @@ class SavedPlacesRepository extends BaseRepository {
     bool forceRefresh = false,
   }) async {
     return proxy.getWithCache(
-      '/saved-places',
-      query: {
-        'limit': limit.toString(),
-        'offset': offset.toString(),
-      },
+      '/api/saved-places',
+      query: {'limit': limit.toString(), 'offset': offset.toString()},
       forceRefresh: forceRefresh,
       cacheTtl: 900, // 15 minutes - user data rarely changes without action
     );
@@ -26,9 +22,9 @@ class SavedPlacesRepository extends BaseRepository {
   /// Create a saved place and invalidate list cache
   Future<dynamic> createSavedPlace(Map<String, dynamic> placeData) async {
     return proxy.post(
-      '/saved-places',
+      '/api/saved-places',
       body: placeData,
-      cacheInvalidationPatterns: ['^GET:/saved-places'],
+      cacheInvalidationPatterns: ['^GET:/api/saved-places'],
     );
   }
 
@@ -38,17 +34,17 @@ class SavedPlacesRepository extends BaseRepository {
     Map<String, dynamic> placeData,
   ) async {
     return proxy.patch(
-      '/saved-places/$placeId',
+      '/api/saved-places/$placeId',
       body: placeData,
-      cacheInvalidationPatterns: ['^GET:/saved-places'],
+      cacheInvalidationPatterns: ['^GET:/api/saved-places'],
     );
   }
 
   /// Delete a saved place
   Future<dynamic> deleteSavedPlace(String placeId) async {
     return proxy.delete(
-      '/saved-places/$placeId',
-      cacheInvalidationPatterns: ['^GET:/saved-places'],
+      '/api/saved-places/$placeId',
+      cacheInvalidationPatterns: ['^GET:/api/saved-places'],
     );
   }
 }

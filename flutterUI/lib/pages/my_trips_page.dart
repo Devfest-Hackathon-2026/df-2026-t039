@@ -1,29 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_travelling/services/service_locator.dart';
 
 import '../widgets/slide_route.dart';
 import 'trip_details_page.dart';
 
-class MyTripsPage extends StatelessWidget {
-  const MyTripsPage({super.key, required this.userData});
 
-  final Map<String, dynamic> userData;
+class MyTripsPage extends StatefulWidget {
+  const MyTripsPage({super.key});
+
+  @override
+  State<MyTripsPage> createState() => _MyTripsPageState();
+}
+
+class _MyTripsPageState extends State<MyTripsPage> {
+  late Future<List<dynamic>> _tripsHistory;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _tripsHistory = Future.wait<dynamic>([
+      ServiceLocator.tripRepository.listTrips(status: 'planned'),
+      ServiceLocator.tripRepository.listTrips(status: 'completed')
+    ]);
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final history = (userData['history'] as List).cast<Map<String, dynamic>>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('My trips')),
-      body: ListView(
-        padding: const EdgeInsets.all(24),
-        children: [
-          _TripSection(
-            title: 'Trip history',
-            emptyMessage: 'No past trips',
-            trips: history,
-          ),
-        ],
-      ),
+      body: FutureBuilder(
+        future: _tripsHistory, 
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error loading trips: ${snapshot.error}'));
+          }
+
+          final pendingResponse = snapshot.data![0];
+          final completedResponse = snapshot.data![1];
+
+          return ListView(
+            padding: const EdgeInsets.all(24),
+            children: [
+              _TripSection(
+                title: '計画中の旅行',
+                emptyMessage: '計画中の旅行はありません',
+                trips: pendingResponse['trips'],
+              ),
+              _TripSection(
+                title: '過去の旅行',
+                emptyMessage: '過去の旅行はありません',
+                trips: completedResponse['trips'],
+              ),
+            ],
+          );
+
+        },
+      )
     );
   }
 }
@@ -37,7 +76,7 @@ class _TripSection extends StatelessWidget {
 
   final String title;
   final String emptyMessage;
-  final List<Map<String, dynamic>> trips;
+  final List<dynamic> trips;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +91,7 @@ class _TripSection extends StatelessWidget {
           for (final trip in trips)
             Card(
               child: ListTile(
-                title: Text(trip['destination'] as String),
+                title: Text('${trip['title']} '),
                 subtitle: Text('${trip['start_date']} - ${trip['end_date']}'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => Navigator.of(context).push(

@@ -138,7 +138,7 @@ class _ProfileContent extends StatelessWidget {
                   title: Text('My trips'),
                   onTap: () {
                     Navigator.of(context).push(
-                      slideRoute(MyTripsPage(userData: userData)),
+                      slideRoute(MyTripsPage()),
                     );
                   },
                   trailing: Icon(Icons.chevron_right),
@@ -149,7 +149,7 @@ class _ProfileContent extends StatelessWidget {
                   title: Text('Saved places'),
                   onTap: () {
                     Navigator.of(context).push(
-                      slideRoute(SavedPlacesPage(userData: userData)),
+                      slideRoute(SavedPlacesPage()),
                     );
                   },
                   trailing: Icon(Icons.chevron_right),
