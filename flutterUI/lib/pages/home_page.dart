@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
   void _openTripChat(String destination) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => ChatPage(initialMessage: '$destinationへの旅行を計画したいです。'),
+        builder: (_) => ChatPage.forDestination(destination: destination),
       ),
     );
   }

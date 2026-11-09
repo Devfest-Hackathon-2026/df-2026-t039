@@ -18,6 +18,11 @@ class _ChatMessage {
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key, this.tripId, this.title, this.initialMessage});
 
+  const ChatPage.forDestination({super.key, required String destination})
+    : tripId = null,
+      title = null,
+      initialMessage = '$destinationへの旅行を計画したいです。';
+
   final String? tripId;
   final String? title;
   final String? initialMessage;

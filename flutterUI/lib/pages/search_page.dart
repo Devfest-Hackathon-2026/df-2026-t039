@@ -3,6 +3,7 @@ import 'package:flutter_ui_travelling/services/service_locator.dart';
 
 import '../services/nearby_places_handler.dart';
 import '../util/geolocator.dart';
+import 'chat_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -270,6 +271,13 @@ class _SearchPageState extends State<SearchPage> {
                           title: Text(place.name),
                           subtitle: Text(
                             '${place.location} · ${place.category}',
+                          ),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatPage.forDestination(
+                                destination: place.name,
+                              ),
+                            ),
                           ),
                           trailing: IconButton(
                             tooltip: isSaved

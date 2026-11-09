@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_ui_travelling/pages/chat_page.dart';
 import 'package:flutter_ui_travelling/pages/search_page.dart';
 import 'package:flutter_ui_travelling/services/nearby_places_handler.dart';
 
@@ -61,6 +62,7 @@ void main() {
     expect(find.text('Ohori Park'), findsNothing);
     await tester.tap(find.byTooltip('保存する: Kushida Shrine'));
     await tester.pumpAndSettle();
+    expect(find.byType(ChatPage), findsNothing);
     expect(find.text('場所を保存しました。'), findsOneWidget);
     final savedShrineButton = find
         .ancestor(
@@ -76,6 +78,16 @@ void main() {
       ),
       findsOneWidget,
     );
+    await tester.tap(find.text('Kushida Shrine'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPage), findsOneWidget);
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).controller!.text,
+      'Kushida Shrineへの旅行を計画したいです。',
+    );
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('保存済み: Kushida Shrine'), findsOneWidget);
     await tester.tap(find.byTooltip('メッセージを閉じる'));
     await tester.pump();
     expect(find.text('場所を保存しました。'), findsNothing);
@@ -93,5 +105,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Ohori Park'), findsOneWidget);
     expect(nearbyLoads, 2);
+    await tester.tap(find.text('Ohori Park'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPage), findsOneWidget);
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).controller!.text,
+      'Ohori Parkへの旅行を計画したいです。',
+    );
   });
 }
