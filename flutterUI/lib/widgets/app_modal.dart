@@ -17,7 +17,7 @@ class AppModal extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: const Text('閉じる'),
         ),
       ],
     );

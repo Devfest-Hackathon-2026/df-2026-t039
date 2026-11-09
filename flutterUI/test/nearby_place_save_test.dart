@@ -21,12 +21,14 @@ void main() {
       'google_place_id': null,
       'latitude': 35,
       'longitude': 139.5,
+      'is_saved': true,
     });
 
     expect(place.id, isNull);
     expect(place.googlePlaceId, isNull);
     expect(place.latitude, 35.0);
     expect(place.longitude, 139.5);
+    expect(place.isSaved, isTrue);
 
     final withoutCoordinates = NearbyPlace.fromJson({
       'name': 'Park',
@@ -86,6 +88,7 @@ void main() {
         home: Scaffold(
           body: SearchPage(
             nearbyPlacesLoader: () async => [place],
+            savedPlacesLoader: () async => [],
             savePlace: (value) async {
               saved = value;
             },
@@ -94,11 +97,12 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Save Park'));
+    await tester.tap(find.byTooltip('保存する: Park'));
     await tester.pumpAndSettle();
 
     expect(saved, same(place));
-    expect(find.text('Place saved.'), findsOneWidget);
+    expect(find.text('場所を保存しました。'), findsOneWidget);
+    expect(find.byTooltip('保存済み: Park'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -115,16 +119,17 @@ void main() {
         home: Scaffold(
           body: SearchPage(
             nearbyPlacesLoader: () async => [place],
+            savedPlacesLoader: () async => [],
             savePlace: (_) async => throw Exception('request failed'),
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Save Park'));
+    await tester.tap(find.byTooltip('保存する: Park'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Error saving place:'), findsOneWidget);
-    expect(find.text('Place saved.'), findsNothing);
+    expect(find.textContaining('場所の保存に失敗しました:'), findsOneWidget);
+    expect(find.text('場所を保存しました。'), findsNothing);
   });
 }

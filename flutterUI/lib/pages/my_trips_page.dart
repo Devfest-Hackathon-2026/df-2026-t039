@@ -30,7 +30,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My trips')),
+      appBar: AppBar(title: const Text('旅行履歴')),
       body: FutureBuilder(
         future: _tripsHistory, 
         builder: (context, snapshot) {
@@ -39,7 +39,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading trips: ${snapshot.error}'));
+            return Center(child: Text('旅行履歴の読み込みに失敗しました: ${snapshot.error}'));
           }
 
           final pendingResponse = snapshot.data![0];

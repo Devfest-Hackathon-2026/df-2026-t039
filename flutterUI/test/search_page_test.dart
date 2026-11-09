@@ -4,15 +4,27 @@ import 'package:flutter_ui_travelling/pages/search_page.dart';
 import 'package:flutter_ui_travelling/services/nearby_places_handler.dart';
 
 void main() {
-  testWidgets('search filters sample places and save is a placeholder', (
+  testWidgets('search, save status, and empty-query nearby results work', (
     tester,
   ) async {
+    const nearbyPlaces = NearbyPlacesHandler();
+    var nearbyLoads = 0;
+    final places = await nearbyPlaces.loadNearbyPlaces();
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: SearchPage(
-            nearbyPlacesLoader: () =>
-                const NearbyPlacesHandler().loadNearbyPlaces(),
+            nearbyPlacesLoader: () async {
+              nearbyLoads++;
+              return places;
+            },
+            placesSearchLoader: (query) async => places
+                .where((place) => place.name.toLowerCase().contains(query))
+                .toList(),
+            savedPlacesLoader: () async => [
+              {'name': 'Ohori Park', 'location': 'Fukuoka'},
+            ],
+            savePlace: (_) async {},
           ),
         ),
       ),
@@ -20,37 +32,66 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(SearchPage), findsOneWidget);
-    expect(find.text('Nearby places'), findsOneWidget);
+    expect(find.text('近くの場所'), findsOneWidget);
     expect(find.text('Ohori Park'), findsOneWidget);
+    final savedParkButton = find
+        .ancestor(
+          of: find.byTooltip('保存済み: Ohori Park'),
+          matching: find.byType(IconButton),
+        )
+        .first;
+    expect(tester.widget<IconButton>(savedParkButton).color, Colors.red);
+    expect(
+      find.descendant(
+        of: savedParkButton,
+        matching: find.byIcon(Icons.favorite),
+      ),
+      findsOneWidget,
+    );
+    expect(nearbyLoads, 1);
 
     await tester.enterText(find.byType(TextField), '  SHRINE  ');
     await tester.pump();
     expect(find.text('Ohori Park'), findsOneWidget);
     expect(find.text('Kushida Shrine'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Search places'));
-    await tester.pump();
+    await tester.tap(find.byTooltip('場所を検索'));
+    await tester.pumpAndSettle();
     expect(find.text('Kushida Shrine'), findsOneWidget);
     expect(find.text('Ohori Park'), findsNothing);
-    await tester.tap(find.byTooltip('Save Kushida Shrine'));
+    await tester.tap(find.byTooltip('保存する: Kushida Shrine'));
+    await tester.pumpAndSettle();
+    expect(find.text('場所を保存しました。'), findsOneWidget);
+    final savedShrineButton = find
+        .ancestor(
+          of: find.byTooltip('保存済み: Kushida Shrine'),
+          matching: find.byType(IconButton),
+        )
+        .first;
+    expect(tester.widget<IconButton>(savedShrineButton).color, Colors.red);
+    expect(
+      find.descendant(
+        of: savedShrineButton,
+        matching: find.byIcon(Icons.favorite),
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.byTooltip('メッセージを閉じる'));
     await tester.pump();
-    expect(find.text('Saving places is not connected yet.'), findsOneWidget);
-    expect(find.byType(SnackBar), findsNothing);
-    await tester.tap(find.byTooltip('Dismiss message'));
-    await tester.pump();
-    expect(find.text('Saving places is not connected yet.'), findsNothing);
+    expect(find.text('場所を保存しました。'), findsNothing);
 
     await tester.enterText(find.byType(TextField), 'not a place');
     await tester.pump();
     expect(find.text('Kushida Shrine'), findsOneWidget);
-    await tester.tap(find.byTooltip('Search places'));
-    await tester.pump();
-    expect(find.text('No places found'), findsOneWidget);
+    await tester.tap(find.byTooltip('場所を検索'));
+    await tester.pumpAndSettle();
+    expect(find.text('場所が見つかりませんでした'), findsOneWidget);
     await tester.enterText(find.byType(TextField), '');
     await tester.pump();
-    expect(find.text('No places found'), findsOneWidget);
-    await tester.tap(find.byTooltip('Search places'));
-    await tester.pump();
+    expect(find.text('場所が見つかりませんでした'), findsOneWidget);
+    await tester.tap(find.byTooltip('場所を検索'));
+    await tester.pumpAndSettle();
     expect(find.text('Ohori Park'), findsOneWidget);
+    expect(nearbyLoads, 2);
   });
 }

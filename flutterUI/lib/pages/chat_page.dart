@@ -16,10 +16,12 @@ class _ChatMessage {
 }
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key, this.tripId, this.title});
+  const ChatPage({super.key, this.tripId, this.title, this.initialMessage});
 
   final String? tripId;
   final String? title;
+  final String? initialMessage;
+
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -40,6 +42,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _tripId = widget.tripId;
+    _messageController.text = widget.initialMessage ?? '';
     if (_tripId != null) {
       _loadHistory();
       _loadTrip();
@@ -295,7 +298,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8F9FB),
         title: Text(
-          widget.title ?? 'Travel assistant',
+          widget.title ?? '旅行アシスタント',
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         actions: [
@@ -327,13 +330,13 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Plan your next trip',
+                            '次の旅行を計画しましょう',
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            'Ask about destinations, activities, or travel plans.',
+                            '行き先やアクティビティ、旅行の計画について質問してください。',
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -439,7 +442,7 @@ class _ChatPageState extends State<ChatPage> {
                       maxLines: 4,
                       textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
-                        hintText: 'Ask about your trip...',
+                        hintText: '旅行について質問する...',
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -454,7 +457,7 @@ class _ChatPageState extends State<ChatPage> {
                     onPressed: _messageController.text.trim().isEmpty || _sending
                         ? null
                         : _sendMessage,
-                    tooltip: 'Send message',
+                    tooltip: 'メッセージを送信',
                     icon: const Icon(Icons.arrow_upward),
                   ),
                 ],

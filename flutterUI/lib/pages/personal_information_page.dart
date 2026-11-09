@@ -16,23 +16,23 @@ class PersonalInformationPage extends StatelessWidget {
     final occupation = userData['occupation'];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Personal Information')),
+      appBar: AppBar(title: const Text('個人情報')),
       body: Container(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (name != null) Text('Name: $name'),
-            if (age != null) Text('Age: $age'),
-            if (phone != null) Text('Phone: $phone'),
-            if (email != null) Text('Email: $email'),
-            if (occupation != null) Text('Occupation: $occupation'),
-            if (address != null) Text('Address: $address'),
+            if (name != null) Text('名前: $name'),
+            if (age != null) Text('年齢: $age'),
+            if (phone != null) Text('電話番号: $phone'),
+            if (email != null) Text('メールアドレス: $email'),
+            if (occupation != null) Text('職業: $occupation'),
+            if (address != null) Text('住所: $address'),
             if (hobbies != null)
               Container(
                 margin: const EdgeInsets.only(top: 5),
                 child: Text(
-                  'Hobbies:',
+                  '趣味:',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),

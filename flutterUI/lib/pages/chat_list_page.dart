@@ -49,7 +49,7 @@ class _ChatListPageState extends State<ChatListPage> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading chats: ${snapshot.error}'));
+            return Center(child: Text('チャットの読み込みに失敗しました: ${snapshot.error}'));
           }
 
           final trips = (snapshot.data?['trips'] as List?) ?? const [];

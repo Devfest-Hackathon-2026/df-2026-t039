@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
       future: _userFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error loading user: ${snapshot.error}'));
+          return Center(child: Text('ユーザー情報の読み込みに失敗しました: ${snapshot.error}'));
         }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -71,7 +71,7 @@ class _ProfileContent extends StatelessWidget {
       'name',
       'fullName',
       'username',
-    ], fallback: 'Traveler');
+    ], fallback: '旅行者');
     final email = _getValue(['email', 'emailAddress']);
     final imageUrl = _getValue([
       'photoUrl',
@@ -124,7 +124,7 @@ class _ProfileContent extends StatelessWidget {
               children: [
                 ListTile(
                   leading: Icon(Icons.person_outline),
-                  title: Text('Personal information'),
+                  title: Text('個人情報'),
                   onTap: () {
                     Navigator.of(context).push(
                       slideRoute(PersonalInformationPage(userData: userData)),
@@ -135,7 +135,7 @@ class _ProfileContent extends StatelessWidget {
                 Divider(height: 1),
                 ListTile(
                   leading: Icon(Icons.luggage_outlined),
-                  title: Text('My trips'),
+                  title: Text('旅行履歴'),
                   onTap: () {
                     Navigator.of(context).push(
                       slideRoute(MyTripsPage()),
@@ -146,7 +146,7 @@ class _ProfileContent extends StatelessWidget {
                 Divider(height: 1),
                 ListTile(
                   leading: Icon(Icons.favorite_border),
-                  title: Text('Saved places'),
+                  title: Text('保存した場所'),
                   onTap: () {
                     Navigator.of(context).push(
                       slideRoute(SavedPlacesPage()),

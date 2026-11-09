@@ -9,11 +9,11 @@ class SettingsPage extends StatelessWidget {
       child: OutlinedButton.icon(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Logout is not connected yet.')),
+            const SnackBar(content: Text('ログアウト機能はまだ利用できません。')),
           );
         },
         icon: const Icon(Icons.logout),
-        label: const Text('Logout'),
+        label: const Text('ログアウト'),
       ),
     );
   }

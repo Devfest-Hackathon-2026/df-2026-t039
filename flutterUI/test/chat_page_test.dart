@@ -18,11 +18,15 @@ void main() {
   ) async {
     await tester.pumpWidget(const MaterialApp(home: ChatPage()));
 
-    expect(find.text('Travel assistant'), findsOneWidget);
-    expect(find.text('Plan your next trip'), findsOneWidget);
-    expect(find.text('Recent conversations'), findsNothing);
+    expect(find.text('旅行アシスタント'), findsOneWidget);
+    expect(find.text('次の旅行を計画しましょう'), findsOneWidget);
+    expect(find.text('最近の会話'), findsNothing);
     expect(
-      tester.widget<IconButton>(find.widgetWithIcon(IconButton, Icons.arrow_upward)).onPressed,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
       isNull,
     );
   });
@@ -33,17 +37,23 @@ void main() {
     await tester.enterText(find.byType(TextField), '   ');
     await tester.pump();
     expect(
-      tester.widget<IconButton>(find.widgetWithIcon(IconButton, Icons.arrow_upward)).onPressed,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
       isNull,
     );
 
     await tester.enterText(find.byType(TextField), 'Plan a trip to Kyoto');
     await tester.pump();
     expect(
-      tester.widget<IconButton>(find.widgetWithIcon(IconButton, Icons.arrow_upward)).onPressed,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
       isNotNull,
     );
   });
 }
-
-

@@ -47,11 +47,11 @@ class BottomNavigation extends StatelessWidget {
       notchMargin: 8,
       child: Row(
         children: [
-          destination(0, Icons.home, 'Home'),
-          destination(1, Icons.search, 'Search'),
+          destination(0, Icons.home, 'ホーム'),
+          destination(1, Icons.search, '検索'),
           const SizedBox(width: 60),
-          destination(2, Icons.person, 'Profile'),
-          destination(3, Icons.settings, 'Settings'),
+          destination(2, Icons.person, 'プロフィール'),
+          destination(3, Icons.settings, '設定'),
         ],
       ),
     );

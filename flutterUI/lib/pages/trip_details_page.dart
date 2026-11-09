@@ -10,7 +10,7 @@ class TripDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Trip details')),
+      appBar: AppBar(title: const Text('旅行の詳細')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(8),
         child: TripDetails(trip: trip),

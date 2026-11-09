@@ -11,6 +11,7 @@ class NearbyPlace {
     this.googlePlaceId,
     this.latitude,
     this.longitude,
+    this.isSaved = false,
   });
 
   final String name;
@@ -20,6 +21,7 @@ class NearbyPlace {
   final String? googlePlaceId;
   final double? latitude;
   final double? longitude;
+  final bool isSaved;
 
   factory NearbyPlace.fromJson(Map<String, dynamic> json) {
     return NearbyPlace(
@@ -30,6 +32,7 @@ class NearbyPlace {
       googlePlaceId: json['google_place_id'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
       longitude: (json['longitude'] as num?)?.toDouble(),
+      isSaved: json['is_saved'] as bool? ?? false,
     );
   }
 }

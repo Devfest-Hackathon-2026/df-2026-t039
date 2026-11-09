@@ -70,7 +70,7 @@ class _SavedPlacesPageState extends State<SavedPlacesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Saved places')),
+      appBar: AppBar(title: const Text('保存した場所')),
       body: FutureBuilder(
         future: _savedPlaces,
         builder: (context, snapshot) {
@@ -79,7 +79,7 @@ class _SavedPlacesPageState extends State<SavedPlacesPage> {
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading trips: ${snapshot.error}'));
+            return Center(child: Text('保存した場所の読み込みに失敗しました: ${snapshot.error}'));
           }
 
           final savedPlaces = snapshot.data['places'];
