@@ -12,6 +12,15 @@ class TripDetails extends StatelessWidget {
     return '約 ${hours > 0 ? '$hours時間' : ''}${mins > 0 ? '$mins分' : ''}';
   }
 
+  String _formatTimeRange(dynamic from, dynamic to) {
+    final start = from?.toString() ?? '';
+    final end = to?.toString() ?? '';
+    if (start.isEmpty && end.isEmpty) return '';
+    if (end.isEmpty) return start;
+    if (start.isEmpty) return end;
+    return '$start - $end';
+  }
+
   String parseToJapaneseDate(String date) {
     if (date.isEmpty) return '';
     final parts = date.split('-');
@@ -79,7 +88,9 @@ class TripDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                trip['title'] as String,
+                trip['title'] as String? ??
+                    trip['destination']?.toString() ??
+                    '',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.height * 0.03,
@@ -183,7 +194,7 @@ class TripDetails extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${item['from']} - ${item['to']}'),
+                              Text(_formatTimeRange(item['from'], item['to'])),
                               if (item['price'] != null) ...[
                                 Text('約 ${item['price']}円'),
                               ],

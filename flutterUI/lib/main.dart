@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; 
 import 'package:flutter_ui_travelling/pages/home_page.dart';
-import 'package:flutter_ui_travelling/pages/chat_page.dart';
+import 'package:flutter_ui_travelling/pages/chat_list_page.dart';
 import 'package:flutter_ui_travelling/pages/profile_page.dart';
 import 'package:flutter_ui_travelling/pages/settings_page.dart';
 import 'package:flutter_ui_travelling/pages/search_page.dart';
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SearchPage(),
             ProfilePage(isActive: _selectedIndex == 2),
             const SettingsPage(),
-            const ChatPage(),
+            const ChatListPage(),
           ],
         ),
       ),
