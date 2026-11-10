@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_travelling/services/service_locator.dart';
 
+import 'chat_page.dart';
+
 class SavedPlacesPage extends StatefulWidget {
-  const SavedPlacesPage({super.key});
+  const SavedPlacesPage({super.key, this.loadSavedPlaces, this.deleteSavedPlace});
+
+  final Future<dynamic> Function()? loadSavedPlaces;
+  final Future<void> Function(String id)? deleteSavedPlace;
 
   @override
   State<SavedPlacesPage> createState() => _SavedPlacesPageState();
@@ -15,8 +20,12 @@ class _SavedPlacesPageState extends State<SavedPlacesPage> {
   @override
   void initState() {
     super.initState();
-    _savedPlaces = ServiceLocator.savedPlacesRepository.listSavedPlaces();
+    _savedPlaces = _loadSavedPlaces();
   }
+
+  Future<dynamic> _loadSavedPlaces() =>
+      widget.loadSavedPlaces?.call() ??
+      ServiceLocator.savedPlacesRepository.listSavedPlaces();
 
   Future<void> _confirmDelete(Map<String, dynamic> place) async {
     final confirmed = await showDialog<bool>(
@@ -49,10 +58,14 @@ class _SavedPlacesPageState extends State<SavedPlacesPage> {
 
     setState(() => _isDeleting = true);
     try {
-      await ServiceLocator.savedPlacesRepository.deleteSavedPlace(placeId);
+      if (widget.deleteSavedPlace != null) {
+        await widget.deleteSavedPlace!(placeId);
+      } else {
+        await ServiceLocator.savedPlacesRepository.deleteSavedPlace(placeId);
+      }
       if (!mounted) return;
       setState(() {
-        _savedPlaces = ServiceLocator.savedPlacesRepository.listSavedPlaces();
+        _savedPlaces = _loadSavedPlaces();
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('保存した場所を削除しました。')),
@@ -91,7 +104,8 @@ class _SavedPlacesPageState extends State<SavedPlacesPage> {
                 title: '保存した場所',
                 emptyMessage: '保存した場所はありません.',
                 savedPlaces: savedPlaces,
-                onPlaceTap: _confirmDelete,
+                onDelete: _confirmDelete,
+                isDeleting: _isDeleting,
               ),
             ],
           );
@@ -106,13 +120,15 @@ class _SavedPlacesSection extends StatelessWidget {
     required this.title,
     required this.emptyMessage,
     required this.savedPlaces,
-    required this.onPlaceTap,
+    required this.onDelete,
+    required this.isDeleting,
   });
 
   final String title;
   final String emptyMessage;
   final List<dynamic> savedPlaces;
-  final ValueChanged<Map<String, dynamic>> onPlaceTap;
+  final ValueChanged<Map<String, dynamic>> onDelete;
+  final bool isDeleting;
 
   @override
   Widget build(BuildContext context) {
@@ -129,8 +145,20 @@ class _SavedPlacesSection extends StatelessWidget {
               child: ListTile(
                 title: Text('${place['name']} '),
                 subtitle: Text('${place['location']}'),
-                trailing: const Icon(Icons.favorite),
-                onTap: () => onPlaceTap(Map<String, dynamic>.from(place as Map)),
+                trailing: IconButton(
+                  tooltip: '${place['name']}を保存した場所から削除',
+                  icon: const Icon(Icons.favorite, color: Colors.red),
+                  onPressed: isDeleting
+                      ? null
+                      : () => onDelete(Map<String, dynamic>.from(place as Map)),
+                ),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ChatPage.forDestination(
+                      destination: place['name'] as String,
+                    ),
+                  ),
+                ),
               ),
             ),
       ],

@@ -96,31 +96,28 @@ class TripDetails extends StatelessWidget {
                   fontSize: MediaQuery.of(context).size.height * 0.03,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${trip['start_date']} ～ ${trip['end_date']} ',
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height * 0.020,
-                        )
+              SizedBox(
+                width: double.infinity,
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    Text(
+                      '${trip['start_date']} ～ ${trip['end_date']} ',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.020,
                       ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('予算： ${trip['budget']}円',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: MediaQuery.of(context).size.height * 0.020,
-                        )
+                    ),
+                    Text(
+                      '予算： ${trip['budget']}円',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: MediaQuery.of(context).size.height * 0.020,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
