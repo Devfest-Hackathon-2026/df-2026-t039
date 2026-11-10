@@ -12,6 +12,15 @@ class TripDetails extends StatelessWidget {
     return '約 ${hours > 0 ? '$hours時間' : ''}${mins > 0 ? '$mins分' : ''}';
   }
 
+  String _formatTimeRange(dynamic from, dynamic to) {
+    final start = from?.toString() ?? '';
+    final end = to?.toString() ?? '';
+    if (start.isEmpty && end.isEmpty) return '';
+    if (end.isEmpty) return start;
+    if (start.isEmpty) return end;
+    return '$start - $end';
+  }
+
   String parseToJapaneseDate(String date) {
     if (date.isEmpty) return '';
     final parts = date.split('-');
@@ -79,37 +88,36 @@ class TripDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                trip['title'] as String,
+                trip['title'] as String? ??
+                    trip['destination']?.toString() ??
+                    '',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.height * 0.03,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${trip['start_date']} ～ ${trip['end_date']} ',
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height * 0.020,
-                        )
+              SizedBox(
+                width: double.infinity,
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    Text(
+                      '${trip['start_date']} ～ ${trip['end_date']} ',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.height * 0.020,
                       ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('予算： ${trip['budget']}円',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: MediaQuery.of(context).size.height * 0.020,
-                        )
+                    ),
+                    Text(
+                      '予算： ${trip['budget']}円',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: MediaQuery.of(context).size.height * 0.020,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -168,7 +176,7 @@ class TripDetails extends StatelessWidget {
                               formatTravelMinutes(item['estimated_travel_minutes']),
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             ),
                             
@@ -177,18 +185,26 @@ class TripDetails extends StatelessWidget {
                             parseTypeToJapaneseName(item["type"], item["movement_type"]),
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 10,
+                              fontSize: 12,
                             ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${item['from']} - ${item['to']}'),
+                              Text(_formatTimeRange(item['from'], item['to'])),
                               if (item['price'] != null) ...[
                                 Text('約 ${item['price']}円'),
                               ],
                             ],
                           ),
+                          if(item['notes'] != null) ...[
+                            Text(
+                              item['notes'],
+                              style: const TextStyle(
+                                fontSize: 10,
+                              ),
+                            )
+                          ]
                         ],
                       ),
                     ),

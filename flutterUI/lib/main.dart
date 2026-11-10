@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; 
 import 'package:flutter_ui_travelling/pages/home_page.dart';
-import 'package:flutter_ui_travelling/pages/chat_page.dart';
+import 'package:flutter_ui_travelling/pages/chat_list_page.dart';
 import 'package:flutter_ui_travelling/pages/profile_page.dart';
 import 'package:flutter_ui_travelling/pages/settings_page.dart';
 import 'package:flutter_ui_travelling/pages/search_page.dart';
@@ -40,11 +40,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '旅行プランナー',
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: '旅行プランナー'),
     );
   }
 }
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SearchPage(),
             ProfilePage(isActive: _selectedIndex == 2),
             const SettingsPage(),
-            const ChatPage(),
+            const ChatListPage(),
           ],
         ),
       ),
@@ -114,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: _selectedIndex == 4
           ? null
           : FloatingActionButton(
+              tooltip: '新しい旅行を作成',
               onPressed: _incrementCounter,
               shape: const CircleBorder(),
               child: const Icon(Icons.add),

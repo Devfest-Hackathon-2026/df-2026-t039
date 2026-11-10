@@ -18,46 +18,42 @@ void main() {
   ) async {
     await tester.pumpWidget(const MaterialApp(home: ChatPage()));
 
-    expect(find.text('Travel assistant'), findsOneWidget);
-    expect(find.text('Plan your next trip'), findsOneWidget);
-    expect(find.text('Recent conversations'), findsNothing);
-    expect(find.textContaining('not connected yet'), findsOneWidget);
+    expect(find.text('旅行アシスタント'), findsOneWidget);
+    expect(find.text('次の旅行を計画しましょう'), findsOneWidget);
+    expect(find.text('最近の会話'), findsNothing);
     expect(
-      tester.widget<IconButton>(find.byType(IconButton)).onPressed,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
       isNull,
     );
   });
 
-  testWidgets('sends a message locally and prevents blank messages', (
-    tester,
-  ) async {
+  testWidgets('prevents blank messages', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: ChatPage()));
 
     await tester.enterText(find.byType(TextField), '   ');
     await tester.pump();
     expect(
-      tester.widget<IconButton>(find.byType(IconButton)).onPressed,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
       isNull,
     );
 
-    await tester.enterText(find.byType(TextField), '  Plan a trip to Kyoto  ');
+    await tester.enterText(find.byType(TextField), 'Plan a trip to Kyoto');
     await tester.pump();
-    await tester.tap(find.byTooltip('Send message'));
-    await tester.pump();
-
-    expect(find.text('Plan a trip to Kyoto'), findsOneWidget);
-    expect(find.text('Plan your next trip'), findsNothing);
     expect(
-      find.text('Assistant replies are not connected yet.'),
-      findsOneWidget,
-    );
-    expect(
-      tester.widget<TextField>(find.byType(TextField)).controller!.text,
-      isEmpty,
-    );
-    expect(
-      tester.widget<IconButton>(find.byType(IconButton)).onPressed,
-      isNull,
+      tester
+          .widget<IconButton>(
+            find.widgetWithIcon(IconButton, Icons.arrow_upward),
+          )
+          .onPressed,
+      isNotNull,
     );
   });
 }

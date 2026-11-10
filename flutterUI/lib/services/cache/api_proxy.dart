@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import '../api_client.dart';
 import 'cache_manager.dart';
 
@@ -42,17 +41,7 @@ class ApiProxy {
     // Return cached data if available and not forcing refresh
     if (!forceRefresh) {
       final cached = cacheManager.get<T>(cacheKey);
-      if (cached != null) {
-        if (kDebugMode) {
-          print('🔄 Cache HIT: $cacheKey');
-        }
-        return cached;
-      }
-    }
-
-    // Fetch from API if not cached
-    if (kDebugMode) {
-      print('📡 Cache MISS: Fetching $path');
+      if (cached != null) return cached;
     }
 
     final response = await apiClient.request('GET', path, query: query) as T;
@@ -70,10 +59,6 @@ class ApiProxy {
     Object? body,
     List<String>? cacheInvalidationPatterns,
   }) async {
-    if (kDebugMode) {
-      print('📤 POST: $path');
-    }
-
     final response = await apiClient.request('POST', path, query: query, body: body) as T;
 
     // Invalidate related caches
@@ -89,10 +74,6 @@ class ApiProxy {
     Object? body,
     List<String>? cacheInvalidationPatterns,
   }) async {
-    if (kDebugMode) {
-      print('📝 PATCH: $path');
-    }
-
     final response = await apiClient.request('PATCH', path, query: query, body: body) as T;
 
     // Invalidate related caches
@@ -108,10 +89,6 @@ class ApiProxy {
     Object? body,
     List<String>? cacheInvalidationPatterns,
   }) async {
-    if (kDebugMode) {
-      print('🔄 PUT: $path');
-    }
-
     final response = await apiClient.request('PUT', path, query: query, body: body) as T;
 
     // Invalidate related caches
@@ -126,10 +103,6 @@ class ApiProxy {
     Map<String, String>? query,
     List<String>? cacheInvalidationPatterns,
   }) async {
-    if (kDebugMode) {
-      print('🗑️ DELETE: $path');
-    }
-
     final response = await apiClient.request('DELETE', path, query: query) as T;
 
     // Invalidate related caches
@@ -144,9 +117,6 @@ class ApiProxy {
 
     for (final pattern in patterns) {
       cacheManager.removeByPattern(pattern);
-      if (kDebugMode) {
-        print('🗑️ Invalidated cache pattern: $pattern');
-      }
     }
   }
 
@@ -163,9 +133,6 @@ class ApiProxy {
   /// Clear all cache
   void clearCache() {
     cacheManager.clear();
-    if (kDebugMode) {
-      print('🗑️ Cache cleared');
-    }
   }
 
   /// Get cache statistics

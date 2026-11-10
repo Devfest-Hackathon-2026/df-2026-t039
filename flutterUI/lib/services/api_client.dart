@@ -23,6 +23,8 @@ class ApiClient {
        _client = client ?? http.Client();
 
   final Uri _baseUri;
+  // AI chat replies can take up to ~2 minutes.
+  static const requestTimeout = Duration(seconds: 150);
   final http.Client _client;
   final ApiTokenProvider? tokenProvider;
 
@@ -68,8 +70,8 @@ class ApiClient {
     }
 
     final response = await http.Response.fromStream(
-      await _client.send(request),
-    );
+      await _client.send(request).timeout(requestTimeout),
+    ).timeout(requestTimeout);
     final text = utf8.decode(response.bodyBytes);
     dynamic data;
     if (text.isNotEmpty) {

@@ -1,4 +1,3 @@
-import '../cache/api_proxy.dart';
 import 'base_repository.dart';
 
 /// Trip Repository with caching
@@ -13,7 +12,7 @@ class TripRepository extends BaseRepository {
     bool forceRefresh = false,
   }) async {
     return proxy.getWithCache(
-      '/trips',
+      '/api/trips',
       query: {
         'limit': limit.toString(),
         'offset': offset.toString(),
@@ -34,12 +33,9 @@ class TripRepository extends BaseRepository {
   }
 
   /// Get single trip detail (cached for 10 minutes - stable data)
-  Future<dynamic> getTrip(
-    String tripId, {
-    bool forceRefresh = false,
-  }) async {
+  Future<dynamic> getTrip(String tripId, {bool forceRefresh = false}) async {
     return proxy.getWithCache(
-      '/trips/$tripId',
+      '/api/trips/$tripId',
       forceRefresh: forceRefresh,
       cacheTtl: 600, // 10 minutes - details don't change often
     );
@@ -48,11 +44,11 @@ class TripRepository extends BaseRepository {
   /// Create a new trip and invalidate related caches
   Future<dynamic> createTrip(Map<String, dynamic> tripData) async {
     return proxy.post(
-      '/trips',
+      '/api/trips',
       body: tripData,
       cacheInvalidationPatterns: [
-        '^GET:/trips', // Invalidate all trips list caches
-        '^GET:/trips/upcoming',
+        '^GET:/api/trips', // Invalidate all trips list caches
+        '^GET:/api/trips/upcoming',
       ],
     );
   }
@@ -63,12 +59,12 @@ class TripRepository extends BaseRepository {
     Map<String, dynamic> tripData,
   ) async {
     return proxy.patch(
-      '/trips/$tripId',
+      '/api/trips/$tripId',
       body: tripData,
       cacheInvalidationPatterns: [
-        '^GET:/trips', // Invalidate trips list
-        '^GET:/trips/$tripId', // Invalidate specific trip detail
-        '^GET:/trips/upcoming', // Invalidate upcoming trip
+        '^GET:/api/trips', // Invalidate trips list
+        '^GET:/api/trips/$tripId', // Invalidate specific trip detail
+        '^GET:/api/trips/upcoming', // Invalidate upcoming trip
       ],
     );
   }
@@ -76,11 +72,11 @@ class TripRepository extends BaseRepository {
   /// Delete a trip and invalidate related caches
   Future<dynamic> deleteTrip(String tripId) async {
     return proxy.delete(
-      '/trips/$tripId',
+      '/api/trips/$tripId',
       cacheInvalidationPatterns: [
-        '^GET:/trips', // Invalidate trips list
-        '^GET:/trips/$tripId', // Invalidate specific trip detail
-        '^GET:/trips/upcoming', // Invalidate upcoming trip
+        '^GET:/api/trips', // Invalidate trips list
+        '^GET:/api/trips/$tripId', // Invalidate specific trip detail
+        '^GET:/api/trips/upcoming', // Invalidate upcoming trip
       ],
     );
   }
@@ -91,10 +87,10 @@ class TripRepository extends BaseRepository {
     List<dynamic> itinerary,
   ) async {
     return proxy.put(
-      '/trips/$tripId/itinerary',
+      '/api/trips/$tripId/itinerary',
       body: {'itinerary': itinerary},
       cacheInvalidationPatterns: [
-        '^GET:/trips/$tripId', // Invalidate specific trip detail
+        '^GET:/api/trips/$tripId', // Invalidate specific trip detail
       ],
     );
   }

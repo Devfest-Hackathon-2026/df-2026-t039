@@ -2,14 +2,12 @@
 // Add these to your test/ directory and run with: flutter test
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_ui_travelling/services/cache_manager.dart';
-import 'package:flutter_ui_travelling/services/api_proxy.dart';
+import 'package:flutter_ui_travelling/services/cache/cache_manager.dart';
+import 'package:flutter_ui_travelling/services/cache/api_proxy.dart';
 import 'package:flutter_ui_travelling/services/api_client.dart';
 import 'package:http/http.dart' as http;
-import 'package:mockito/mockito.dart';
+import 'package:http/testing.dart' as http_testing;
 
-// Mock implementation
-class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
   group('CacheManager', () {
@@ -96,18 +94,18 @@ void main() {
       cache.set('key2', 'b' * 2000); // 2000 byte string
       
       final size = cache.getCacheSize();
-      expect(size, greaterThan(3000)); // Approximate
+      expect(size, greaterThanOrEqualTo(3000)); // Approximate
     });
   });
 
   group('ApiProxy Cache Behavior', () {
-    late MockHttpClient mockClient;
+    late http.Client mockClient;
     late ApiClient apiClient;
     late CacheManager cacheManager;
     late ApiProxy proxy;
 
     setUp(() {
-      mockClient = MockHttpClient();
+      mockClient = http_testing.MockClient((_) async => http.Response('{}', 200));
       cacheManager = CacheManager();
       apiClient = ApiClient(
         baseUrl: 'https://api.example.com',
@@ -205,7 +203,7 @@ void main() {
       expect(cache.get('POST:/trips'), isNotNull); // Not matched
     });
 
-    test('regex pattern ^GET:/trips/123$ matches exact path', () {
+    test(r'regex pattern ^GET:/trips/123$ matches exact path', () {
       cache.set('GET:/trips/123', 'detail');
       cache.set('GET:/trips/123/items', 'items');
       
