@@ -1,14 +1,16 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { createApp } from './app.js'
+import { firebaseAuth } from './firebase.js'
+import { withDevAuth } from './lib/dev-auth.js'
 
-const app = new Hono()
+const app = createApp(withDevAuth((token) => firebaseAuth.verifyIdToken(token)))
 
-app.get('/', (c) => c.json({ message: 'Hello Hono!' }))
-app.get('/health', (c) => c.json({ ok: true }))
-
-
-// cloud runで実際に動いたNode.jsのバージョンを確認する
-console.log(JSON.stringify({ event: 'runtime_start', nodeVersion: process.version }))
+console.log(
+  JSON.stringify({
+    event: 'runtime_start',
+    nodeVersion: process.version,
+  }),
+)
 
 serve({
   fetch: app.fetch,

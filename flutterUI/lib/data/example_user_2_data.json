@@ -1,0 +1,95 @@
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "age": 30,
+    "address": "Fukuoka",
+    "phone": "010-1234-5678",
+    "gender": "male",
+    "occupation": "Student",
+    "hobbies": ["Reading", "Traveling", "Coding"],
+    "saved_places": [
+        {"name": "Ohori Park", "location": "Fukuoka"},
+        {"name": "Dazaifu Tenmangu", "location": "Dazaifu"},
+        {"name": "Itsukushima Shrine", "location": "Hiroshima"}
+    ],
+    "upcoming_trips": [
+    ],
+    "history": [
+        {
+            "destination": "Osaka",
+            "start_date": "2024-07-01",
+            "end_date": "2024-07-03",
+            "status": "completed",
+            "budget": 17000,
+            "itinerary": [
+                [
+                    {"from": "09:00", "to": "09:30", "price": 300, "type": "movement", "movement_type": "train"},
+                    {"from": "12:00", "to": "13:00", "price": 1500, "type": "place_food"}
+                ],
+                [
+                    {"from": "10:00", "to": "12:00", "price": 2000, "type": "place_entertainment"},
+                    {"from": "14:00", "to": "15:00", "price": 500, "type": "movement", "movement_type": "bus"}
+                ],
+                [
+                    {"from": "09:00", "to": "09:30", "price": 0, "type": "movement", "movement_type": "walk"},
+                    {"from": "10:00", "to": "12:00", "price": 1500, "type": "place_food"}
+                ]
+            ]
+        },
+        {
+            "destination": "Kyoto",
+            "start_date": "2023-12-01",
+            "end_date": "2023-12-02",
+            "status": "completed",
+            "budget": 20000,
+            "itinerary": [
+                [
+                    {"from": "09:00", "to": "09:30", "price": 500, "type": "movement", "movement_type": "bus"},
+                    {"from": "12:00", "to": "13:00", "price": 1200, "type": "place_food"}
+                ],
+                [
+                    {"from": "10:00", "to": "12:00", "price": 1500, "type": "place_entertainment"},
+                    {"from": "14:00", "to": "15:00", "price": 500, "type": "movement", "movement_type": "bus"}
+                ]
+            ]
+        },
+        {
+            "destination": "Iwate",
+            "start_date": "2023-10-01",
+            "end_date": "2023-10-03",
+            "status": "completed",
+            "budget": 25000,
+            "itinerary": [
+                [
+                    {"from": "09:00", "to": "09:30", "price": 0, "type": "movement", "movement_type": "walk"},
+                    {"from": "10:00", "to": "12:00", "price": 2000, "type": "place_sport"}
+                ],
+                [
+                    {"from": "12:00", "to": "13:00", "price": 1500, "type": "place_food"},
+                    {"from": "14:00", "to": "15:00", "price": 500, "type": "movement", "movement_type": "bus"}
+                ],
+                [
+                    {"from": "09:00", "to": "09:30", "price": 0, "type": "movement", "movement_type": "walk"},
+                    {"from": "10:00", "to": "12:00", "price": 1500, "type": "place_food"}
+                ]
+            ]
+        },
+        {
+            "destination": "Tokyo",
+            "start_date": "2023-08-01",
+            "end_date": "2023-08-02",
+            "status": "completed",
+            "budget": 50000,
+            "itinerary": [
+                [
+                    {"from": "09:00", "to": "09:30", "price": 300, "type": "movement", "movement_type": "train"},
+                    {"from": "10:00", "to": "12:00", "price": 2500, "type": "place_entertainment"}
+                ],
+                [
+                    {"from": "12:00", "to": "13:00", "price": 1500, "type": "place_food"},
+                    {"from": "14:00", "to": "15:00", "price": 500, "type": "movement", "movement_type": "bus"}
+                ]
+            ]
+        }
+    ]
+}

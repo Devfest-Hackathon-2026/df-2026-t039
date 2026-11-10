@@ -2,19 +2,33 @@
   "name": "hono-api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test:integration": "npm run build && node --test test/api.integration.test.mjs",
+    "demo": "tsx watch --env-file=.env src/demo.ts",
+    "demo:start": "node --env-file=.env dist/demo.js",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.mjs\" \"demo/**/*.{js,html}\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.mjs\" \"demo/**/*.{js,html}\"",
+    "seed:demo": "tsx --env-file=.env src/scripts/seed-demo.ts"
   },
   "engines": {
     "node": "24.x"
   },
   "dependencies": {
+    "@google/adk": "^2.4.0",
+    "@google/genai": "^2.32.0",
     "@hono/node-server": "^2.1.3",
-    "hono": "^4.13.16"
+    "@mikro-orm/postgresql": "^7.2.8",
+    "firebase-admin": "^14.5.0",
+    "hono": "^4.13.16",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
+    "@types/pg": "^8.23.1",
+    "prettier": "^3.9.10",
     "tsx": "^4.23.0",
     "typescript": "^7.0.2"
   }
