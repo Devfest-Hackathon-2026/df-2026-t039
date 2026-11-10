@@ -272,7 +272,10 @@ class _SearchPageState extends State<SearchPage> {
                           subtitle: Text(
                             '${place.location} · ${place.category}',
                           ),
-                          onTap: () => Navigator.of(context).push(
+                          onTap: () => Navigator.of(
+                            context,
+                            rootNavigator: true,
+                          ).push(
                             MaterialPageRoute(
                               builder: (_) => ChatPage.forDestination(
                                 destination: place.name,

@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _openTripChat(String destination) {
-    Navigator.of(context).push(
+    Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (_) => ChatPage.forDestination(destination: destination),
       ),
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                         side: BorderSide.none,
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(
+                        Navigator.of(context, rootNavigator: true).push(
                           MaterialPageRoute(builder: (_) => const ChatPage()),
                         );
                       },

@@ -20,7 +20,7 @@ class _ChatListPageState extends State<ChatListPage> {
   }
 
   Future<void> _openChat({String? tripId, String? title}) async {
-    await Navigator.of(context).push(
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (_) => ChatPage(tripId: tripId, title: title),
       ),

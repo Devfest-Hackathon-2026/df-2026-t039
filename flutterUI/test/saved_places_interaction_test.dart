@@ -4,6 +4,49 @@ import 'package:flutter_ui_travelling/pages/chat_page.dart';
 import 'package:flutter_ui_travelling/pages/saved_places_page.dart';
 
 void main() {
+  testWidgets('chat covers outer navigation from nested saved places', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {},
+            tooltip: '新しい旅行を作成',
+            child: const Icon(Icons.add),
+          ),
+          body: Navigator(
+            onGenerateRoute: (_) => MaterialPageRoute<void>(
+              builder: (_) => SavedPlacesPage(
+                loadSavedPlaces: () async => {
+                  'places': [
+                    {'id': '1', 'name': '大濠公園', 'location': '福岡'},
+                  ],
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('新しい旅行を作成'), findsOneWidget);
+
+    await tester.tap(find.text('大濠公園 '));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPage), findsOneWidget);
+    expect(find.byTooltip('新しい旅行を作成'), findsNothing);
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).controller!.text,
+      '大濠公園への旅行を計画したいです。',
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('新しい旅行を作成'), findsOneWidget);
+    expect(find.text('大濠公園 '), findsOneWidget);
+  });
+
   testWidgets('saved place opens chat, heart confirms deletion', (tester) async {
     final places = [
       {'id': '1', 'name': '大濠公園', 'location': '福岡'},

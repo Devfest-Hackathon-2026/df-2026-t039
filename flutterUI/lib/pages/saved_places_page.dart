@@ -152,7 +152,7 @@ class _SavedPlacesSection extends StatelessWidget {
                       ? null
                       : () => onDelete(Map<String, dynamic>.from(place as Map)),
                 ),
-                onTap: () => Navigator.of(context).push(
+                onTap: () => Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (_) => ChatPage.forDestination(
                       destination: place['name'] as String,
